@@ -8,9 +8,11 @@ contract BetPool {
     uint256 constant feePercentage = 15;
     //immutable parameters
     address payable immutable owner;
+    uint256 immutable deployTime;
 
     constructor() {
         owner = payable(msg.sender);
+        deployTime = block.timestamp;
     }
 
     //state variables
@@ -28,6 +30,7 @@ contract BetPool {
 
     //read functions
 
+    //@returns current ROI ratio for A players
     function getRatioForA() external view returns (uint256) {
         require(
             totalBalanceA != 0 && totalBalanceB != 0,
@@ -38,6 +41,7 @@ contract BetPool {
                 (100 * totalBalanceA)));
     }
 
+    //@returns current ROI ratio for B players
     function getRatioForB() external view returns (uint256) {
         require(
             totalBalanceA != 0 && totalBalanceB != 0,
@@ -48,6 +52,7 @@ contract BetPool {
                 (100 * totalBalanceB)));
     }
 
+    //@returns possible ratio, takes input and calculates the ROI if the amount is played
     function getNewRatio(uint256 _potentialBetAmount, uint256 _betSide)
         external
         view
@@ -87,6 +92,11 @@ contract BetPool {
         totalBalanceB += msg.value;
     }
 
+    //@param
+    //0:bets still open
+    //1:A wins
+    //2:B wins
+    //3:Bets closed, winner not decided yet
     function selectWinner(uint8 _winnerIndex) external onlyOwner {
         require(_winnerIndex < 4, "Not valid call");
         winnerIndex = _winnerIndex;
@@ -124,7 +134,9 @@ contract BetPool {
         payable(msg.sender).transfer(shareOfUser);
     }
 
+    //to collect fee's after withdrawals- this option will be available after a week of contract deployment
     function withdrawAll() external onlyOwner {
+        require(block.timestamp > deployTime + 7 days, "not available yet!");
         owner.transfer(address(this).balance);
     }
 
