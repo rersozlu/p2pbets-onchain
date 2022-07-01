@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
 
+//@author rersozlu
 contract BetPool {
     //constants
     uint256 constant feePercentage = 15;
