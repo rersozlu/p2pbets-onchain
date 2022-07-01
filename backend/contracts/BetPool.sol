@@ -23,6 +23,9 @@ contract BetPool {
     uint8 winnerIndex = 0; //will change to 3 as soon as the bet closes!
 
     //events & modifiers
+    event BetPlaced(address from, uint8 option, uint256 amount);
+    event RewardClaimed(address to, uint256 amount);
+
     modifier onlyOwner() {
         require(msg.sender == owner);
         _;
@@ -83,6 +86,7 @@ contract BetPool {
         require(winnerIndex == 0, "Bets closed!");
         balancesA[msg.sender] += msg.value;
         totalBalanceA += msg.value;
+        emit BetPlaced(msg.sender, 1, msg.value);
     }
 
     function placeBetB() external payable {
@@ -90,6 +94,7 @@ contract BetPool {
         require(winnerIndex == 0, "Bets closed!");
         balancesB[msg.sender] += msg.value;
         totalBalanceB += msg.value;
+        emit BetPlaced(msg.sender, 2, msg.value);
     }
 
     //@param
@@ -117,10 +122,12 @@ contract BetPool {
 
         if (totalBalanceB == 0) {
             payable(msg.sender).transfer(initialShareOfUser);
+            emit RewardClaimed(msg.sender, initialShareOfUser);
         }
         if (totalBalanceB > 0) {
             uint256 totalShare = initialShareOfUser + rewardOfUser;
             payable(msg.sender).transfer(totalShare);
+            emit RewardClaimed(msg.sender, totalShare);
         }
     }
 
@@ -139,10 +146,12 @@ contract BetPool {
 
         if (totalBalanceA == 0) {
             payable(msg.sender).transfer(initialShareOfUser);
+            emit RewardClaimed(msg.sender, initialShareOfUser);
         }
         if (totalBalanceA > 0) {
             uint256 totalShare = initialShareOfUser + rewardOfUser;
             payable(msg.sender).transfer(totalShare);
+            emit RewardClaimed(msg.sender, totalShare);
         }
     }
 
