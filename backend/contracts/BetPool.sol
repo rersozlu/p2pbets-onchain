@@ -108,14 +108,20 @@ contract BetPool {
             balancesA[msg.sender] > 0,
             "You did not place a bet on this option!"
         );
-
-        uint256 shareOfUser = balancesA[msg.sender] +
-            ((balancesA[msg.sender] * totalBalanceB * (100 - feePercentage)) /
-                (totalBalanceA * 100));
+        uint256 initialShareOfUser = balancesA[msg.sender];
+        uint256 rewardOfUser = ((balancesA[msg.sender] *
+            totalBalanceB *
+            (100 - feePercentage)) / (totalBalanceA * 100));
 
         balancesA[msg.sender] = 0;
 
-        payable(msg.sender).transfer(shareOfUser);
+        if (totalBalanceB == 0) {
+            payable(msg.sender).transfer(initialShareOfUser);
+        }
+        if (totalBalanceB > 0) {
+            uint256 totalShare = initialShareOfUser + rewardOfUser;
+            payable(msg.sender).transfer(totalShare);
+        }
     }
 
     function claimRewardB() external {
@@ -124,14 +130,20 @@ contract BetPool {
             balancesB[msg.sender] > 0,
             "You did not place a bet on this option!"
         );
-
-        uint256 shareOfUser = balancesB[msg.sender] +
-            ((balancesB[msg.sender] * totalBalanceA * (100 - feePercentage)) /
-                (totalBalanceB * 100));
+        uint256 initialShareOfUser = balancesB[msg.sender];
+        uint256 rewardOfUser = ((balancesB[msg.sender] *
+            totalBalanceA *
+            (100 - feePercentage)) / (totalBalanceB * 100));
 
         balancesB[msg.sender] = 0;
 
-        payable(msg.sender).transfer(shareOfUser);
+        if (totalBalanceA == 0) {
+            payable(msg.sender).transfer(initialShareOfUser);
+        }
+        if (totalBalanceA > 0) {
+            uint256 totalShare = initialShareOfUser + rewardOfUser;
+            payable(msg.sender).transfer(totalShare);
+        }
     }
 
     //to collect fee's after withdrawals- this option will be available after a week of contract deployment
