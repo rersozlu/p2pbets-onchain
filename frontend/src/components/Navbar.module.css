@@ -1,0 +1,33 @@
+.Nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Nav > img {
+  max-width: 250px;
+}
+
+.Nav > h2 {
+  font-size: 18px;
+  color: #d9d9d9;
+}
+
+.Nav > button {
+  background-color: #e84142;
+  color: #d9d9d9;
+  box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.25);
+  border-radius: 18px;
+  border: none;
+  padding: 1.2em;
+  margin-left: 40px;
+  font-weight: 700;
+  transition: 0.15s ease;
+}
+
+.Nav > button:hover {
+  background-color: #dd8080;
+  color: #fff;
+  cursor: pointer;
+  transform: scale(1.02, 1.02);
+}
