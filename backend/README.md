@@ -2,7 +2,7 @@ prior to testing or reviewing:
 
 run -npm i
 then create an .env file in the root. add:
-DEPLOYER_ADDRESS=<YOUR ADDRESS>
+DEPLOYER_ADDRESS=YOUR ADDRESS PRIVATE KEY
 
 Try running some of the following tasks:
 
