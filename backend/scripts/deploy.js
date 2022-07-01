@@ -3,7 +3,7 @@ const hre = require("hardhat");
 async function main() {
   const [deployer] = await hre.ethers.getSigners();
   const BetPool = await hre.ethers.getContractFactory("BetPool");
-  const betPool = await BetPool.deploy(deployer.address);
+  const betPool = await BetPool.deploy(deployer.address, 604800);
 
   await betPool.deployed();
 

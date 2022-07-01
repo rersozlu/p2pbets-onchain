@@ -5,7 +5,7 @@ describe("BetPool", function () {
   it("Should run all bet functions properly", async function () {
     const [deployer, randomAcc, thirdAcc] = await ethers.getSigners();
     const BetPool = await ethers.getContractFactory("BetPool");
-    const betPool = await BetPool.deploy(deployer.address);
+    const betPool = await BetPool.deploy(deployer.address, 604800);
     await betPool.deployed();
 
     //deployer should be the owner

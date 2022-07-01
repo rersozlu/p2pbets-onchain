@@ -10,10 +10,12 @@ contract BetPool {
     //immutable parameters
     address payable immutable owner;
     uint256 immutable deployTime;
+    uint256 immutable expiryTime;
 
-    constructor(address payable _owner) {
+    constructor(address payable _owner, uint256 _timeSpan) {
         owner = _owner;
         deployTime = block.timestamp;
+        expiryTime = block.timestamp + _timeSpan;
     }
 
     //state variables
@@ -36,6 +38,10 @@ contract BetPool {
 
     function getOwner() external view returns (address) {
         return owner;
+    }
+
+    function getExpiry() external view returns (uint256) {
+        return expiryTime;
     }
 
     //@returns current ROI ratio for A players
@@ -89,6 +95,7 @@ contract BetPool {
     function placeBetA() external payable {
         require(msg.value > 0, "Bet cannot be 0");
         require(winnerIndex == 0, "Bets closed!");
+        require(expiryTime > block.timestamp, "Bets closed!");
         balancesA[msg.sender] += msg.value;
         totalBalanceA += msg.value;
         emit BetPlaced(msg.sender, 1, msg.value);
@@ -97,6 +104,7 @@ contract BetPool {
     function placeBetB() external payable {
         require(msg.value > 0, "Bet cannot be 0");
         require(winnerIndex == 0, "Bets closed!");
+        require(expiryTime > block.timestamp, "Bets closed!");
         balancesB[msg.sender] += msg.value;
         totalBalanceB += msg.value;
         emit BetPlaced(msg.sender, 2, msg.value);
