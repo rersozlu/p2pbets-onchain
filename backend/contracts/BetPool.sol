@@ -10,8 +10,8 @@ contract BetPool {
     address payable immutable owner;
     uint256 immutable deployTime;
 
-    constructor() {
-        owner = payable(msg.sender);
+    constructor(address payable _owner) {
+        owner = _owner;
         deployTime = block.timestamp;
     }
 

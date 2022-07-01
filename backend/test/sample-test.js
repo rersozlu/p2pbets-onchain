@@ -3,10 +3,10 @@ const { ethers } = require("hardhat");
 
 describe("BetPool", function () {
   it("Should run all bet functions properly", async function () {
-    const BetPool = await ethers.getContractFactory("BetPool");
-    const betPool = await BetPool.deploy();
-    await betPool.deployed();
     const [deployer, randomAcc, thirdAcc] = await ethers.getSigners();
+    const BetPool = await ethers.getContractFactory("BetPool");
+    const betPool = await BetPool.deploy(deployer.address);
+    await betPool.deployed();
 
     //Deployer puts a bet of 5 Avax to A option
     const betForA = await betPool.placeBetA({
