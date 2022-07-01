@@ -8,6 +8,9 @@ describe("BetPool", function () {
     const betPool = await BetPool.deploy(deployer.address);
     await betPool.deployed();
 
+    //deployer should be the owner
+    expect(await betPool.getOwner()).to.equal(deployer.address);
+
     //Deployer puts a bet of 5 Avax to A option
     const betForA = await betPool.placeBetA({
       value: ethers.utils.parseEther("5"),

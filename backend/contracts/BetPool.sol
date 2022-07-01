@@ -33,6 +33,10 @@ contract BetPool {
 
     //read functions
 
+    function getOwner() external view returns (address) {
+        return owner;
+    }
+
     //@returns current ROI ratio for A players
     function getRatioForA() external view returns (uint256) {
         require(
