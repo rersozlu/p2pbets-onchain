@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    "contractAddress": "0x09F20ee6f95ab47eaef5dbEc5Aa59e027FAB59D7",
     "teamA": "Fenerbahce S.K.",
     "teamB": "Galatasaray S.K.",
     "teamALogo": "./contractImages/fb.png",

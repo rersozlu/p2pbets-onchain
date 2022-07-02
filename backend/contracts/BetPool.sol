@@ -46,7 +46,7 @@ contract BetPool {
 
     //@returns current ROI ratio for A players
     function getRatioForA() external view returns (uint256) {
-        if (totalBalanceB == 0) return 1;
+        if (totalBalanceB == 0) return 1000;
         if (totalBalanceA == 0) return totalBalanceB;
 
         return (1000 +
@@ -56,7 +56,7 @@ contract BetPool {
 
     //@returns current ROI ratio for B players
     function getRatioForB() external view returns (uint256) {
-        if (totalBalanceA == 0) return 1;
+        if (totalBalanceA == 0) return 1000;
         if (totalBalanceB == 0) return totalBalanceA;
 
         return (1000 +
@@ -72,6 +72,8 @@ contract BetPool {
     {
         require(_betSide == 1 || _betSide == 2, "Not such an option found!");
         if (_potentialBetAmount == 0) return 0;
+        if (totalBalanceB == 0) return 0;
+        if (totalBalanceA == 0) return 0;
         if (_betSide == 1) {
             uint256 _totalBalanceA = totalBalanceA + _potentialBetAmount;
             uint256 _newRatio = (1000 +

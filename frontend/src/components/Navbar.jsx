@@ -3,6 +3,7 @@ import logo from "../assets/images/navLogo.png";
 import { ethers } from "ethers";
 import { Web3Context } from "../contexts/Web3Context";
 import { useContext, useEffect } from "react";
+import { config } from "../config";
 
 function Navbar() {
   const [web3Data, setWeb3Data] = useContext(Web3Context);
@@ -29,7 +30,7 @@ function Navbar() {
   useEffect(() => {
     try {
       const viewProvider = new ethers.providers.JsonRpcProvider(
-        "https://api.avax.network/ext/bc/C/rpc"
+        config.rpcProvider
       );
       setWeb3Data((prevData) => ({
         ...prevData,
@@ -52,7 +53,7 @@ function Navbar() {
       <img src={logo} alt="site-logo" />
       <h2>Home of Decentralized Peer to Peer Bets</h2>
       <button onClick={connectWallet}>
-        {web3Data.signer ? "Connected" : "Connect Wallet"}
+        {window.ethereum.isConnected() ? "Connected" : "Connect Wallet"}
       </button>
     </div>
   );
