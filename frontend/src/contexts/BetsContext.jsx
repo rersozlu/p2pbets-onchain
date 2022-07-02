@@ -4,10 +4,10 @@ import betAbi from "../contracts/BetPool.json";
 export const BetsContext = createContext();
 
 export function BetsContextProvider(props) {
-  const [betsData, setBetsData] = useState({});
+  const [betsData, setBetsData] = useState([]);
   useEffect(() => {
     setBetsData(
-      data.map((item, i) => ({
+      data.map((item) => ({
         id: item.id,
         contractAddress: item.contractAddress,
         teamA: item.teamA,

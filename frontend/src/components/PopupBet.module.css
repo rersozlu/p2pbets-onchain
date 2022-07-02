@@ -1,0 +1,40 @@
+.Popup {
+  position: absolute;
+  top: 20%;
+  border: solid black 1px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 1600px;
+}
+.date {
+  color: aliceblue;
+  text-align: center;
+}
+
+.info {
+  display: flex;
+}
+
+.teamA {
+  font-size: 18px;
+  color: wheat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.teamB {
+  font-size: 18px;
+  color: wheat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.teamA > img {
+  max-height: 200px;
+}
+
+.teamB > img {
+  max-height: 200px;
+}
