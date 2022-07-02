@@ -46,10 +46,9 @@ contract BetPool {
 
     //@returns current ROI ratio for A players
     function getRatioForA() external view returns (uint256) {
-        require(
-            totalBalanceA != 0 && totalBalanceB != 0,
-            "One side has not received any bet yet!"
-        );
+        if (totalBalanceB == 0) return 1;
+        if (totalBalanceA == 0) return totalBalanceB;
+
         return (1000 +
             ((1000 * totalBalanceB * (100 - feePercentage)) /
                 (100 * totalBalanceA)));
@@ -57,10 +56,9 @@ contract BetPool {
 
     //@returns current ROI ratio for B players
     function getRatioForB() external view returns (uint256) {
-        require(
-            totalBalanceA != 0 && totalBalanceB != 0,
-            "One side has not received any bet yet!"
-        );
+        if (totalBalanceA == 0) return 1;
+        if (totalBalanceB == 0) return totalBalanceA;
+
         return (1000 +
             ((1000 * totalBalanceA * (100 - feePercentage)) /
                 (100 * totalBalanceB)));
