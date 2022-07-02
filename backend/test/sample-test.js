@@ -55,7 +55,7 @@ describe("BetPool", function () {
 
     //getting possible ratio for front-end
     const possibleRatio = await betPool.getNewRatio(
-      ethers.utils.parseEther("5"),
+      ethers.utils.parseEther("14"),
       1
     );
     expect(betRatioA > possibleRatio).to.equal(true);

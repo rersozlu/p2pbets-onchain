@@ -15,7 +15,6 @@ export function Web3ContextProvider(props) {
   useEffect(() => {
     if (window.ethereum) {
       window.ethereum.on("chainChanged", chainChangeHandler);
-      console.log("mounted");
     }
 
     return () => {

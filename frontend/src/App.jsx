@@ -1,17 +1,27 @@
 import styles from "./App.module.css";
-import { BetsContext, BetsContextProvider } from "./contexts/BetsContext";
+import { BetsContextProvider } from "./contexts/BetsContext";
 import { Web3ContextProvider } from "./contexts/Web3Context";
 import Navbar from "./components/Navbar";
+import AllCards from "./components/AllCards";
 import PopupBet from "./components/PopupBet";
-import { useContext } from "react";
+
+import { useState, useContext } from "react";
 
 function App() {
+  const [selectedCard, setSelectedCard] = useState("");
   return (
     <Web3ContextProvider>
       <BetsContextProvider>
         <div className={styles.App}>
           <Navbar />
-          <PopupBet />
+          <AllCards toggleFunction={setSelectedCard} isPopup={selectedCard} />
+
+          {selectedCard > 0 && (
+            <PopupBet
+              closePopup={() => setSelectedCard("")}
+              cardData={selectedCard - 1}
+            />
+          )}
         </div>
       </BetsContextProvider>
     </Web3ContextProvider>

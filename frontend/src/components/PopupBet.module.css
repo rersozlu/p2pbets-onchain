@@ -1,14 +1,22 @@
 .Popup {
-  position: absolute;
+  position: fixed;
   top: 20%;
   border: solid black 1px;
   left: 50%;
   transform: translateX(-50%);
   max-width: 1600px;
+  z-index: 3;
 }
 .date {
   color: aliceblue;
   text-align: center;
+}
+
+.closeBtn {
+  color: white;
+}
+.closeBtn:hover {
+  cursor: pointer;
 }
 
 .info {
@@ -32,11 +40,11 @@
 }
 
 .teamA > img {
-  max-height: 200px;
+  height: 200px;
 }
 
 .teamB > img {
-  max-height: 200px;
+  height: 200px;
 }
 
 .dropdown {

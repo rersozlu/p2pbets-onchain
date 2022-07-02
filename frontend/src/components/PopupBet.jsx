@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { BetsContext } from "../contexts/BetsContext";
 import { Web3Context } from "../contexts/Web3Context";
 import { ethers } from "ethers";
-function PopupBet(props) {
+function PopupBet({ cardData, closePopup }) {
   const [web3Data, setWeb3Data] = useContext(Web3Context);
   const [betsData, setBetsData] = useContext(BetsContext);
   const [betData, setBetData] = useState({});
@@ -11,15 +11,15 @@ function PopupBet(props) {
 
   function changeRatio(num) {
     const ratioString = num.toString();
-    return ratioString[0] + "." + (num % 1000).toString();
+    return (num / 1000).toString();
   }
 
   async function placeBet() {
     try {
       if (window.ethereum.isConnected()) {
         const betContract = new ethers.Contract(
-          betsData[0].contractAddress,
-          betsData[0].abi,
+          betsData[cardData].contractAddress,
+          betsData[cardData].abi,
           web3Data.signer
         );
         if (userSelection.selectedOption == "optionA") {
@@ -46,8 +46,8 @@ function PopupBet(props) {
     try {
       if (web3Data.viewProvider) {
         const betContract = new ethers.Contract(
-          betsData[0].contractAddress,
-          betsData[0].abi,
+          betsData[cardData].contractAddress,
+          betsData[cardData].abi,
           web3Data.viewProvider
         );
         const optionARatio = await betContract.getRatioForA();
@@ -84,16 +84,19 @@ function PopupBet(props) {
     <div className={styles.Popup}>
       {betsData.length !== 0 && (
         <>
-          <p className={styles.date}>{betsData[0].date}</p>
+          <p onClick={closePopup} className={styles.closeBtn}>
+            Close
+          </p>
+          <p className={styles.date}>{betsData[cardData].date}</p>
           <div className={styles.info}>
             <div className={styles.teamA}>
-              <img src={betsData[0].teamALogo} alt="teamALogo" />
-              <p>{betsData[0].teamA}</p>
+              <img src={betsData[cardData].teamALogo} alt="teamALogo" />
+              <p>{betsData[cardData].teamA}</p>
               <p>{betData.optionARatio}</p>
             </div>
             <div className={styles.teamB}>
-              <img src={betsData[0].teamBLogo} alt="teamBLogo" />
-              <p>{betsData[0].teamB}</p>
+              <img src={betsData[cardData].teamBLogo} alt="teamBLogo" />
+              <p>{betsData[cardData].teamB}</p>
               <p>{betData.optionBRatio}</p>
             </div>
           </div>
@@ -110,8 +113,8 @@ function PopupBet(props) {
               className={styles.dropdown}
             >
               <option value="default">--Choose--</option>
-              <option value="optionA">{betsData[0].teamA}</option>
-              <option value="optionB">{betsData[0].teamB}</option>
+              <option value="optionA">{betsData[cardData].teamA}</option>
+              <option value="optionB">{betsData[cardData].teamB}</option>
             </select>
             <input
               className={styles.selection}

@@ -47,7 +47,7 @@ contract BetPool {
     //@returns current ROI ratio for A players
     function getRatioForA() external view returns (uint256) {
         if (totalBalanceB == 0) return 1000;
-        if (totalBalanceA == 0) return totalBalanceB;
+        if (totalBalanceA == 0) return (1000 + (totalBalanceB / (10**15)));
 
         return (1000 +
             ((1000 * totalBalanceB * (100 - feePercentage)) /
@@ -57,7 +57,7 @@ contract BetPool {
     //@returns current ROI ratio for B players
     function getRatioForB() external view returns (uint256) {
         if (totalBalanceA == 0) return 1000;
-        if (totalBalanceB == 0) return totalBalanceA;
+        if (totalBalanceB == 0) return (1000 + (totalBalanceA / (10**15)));
 
         return (1000 +
             ((1000 * totalBalanceA * (100 - feePercentage)) /
@@ -86,7 +86,7 @@ contract BetPool {
             uint256 _newRatio = (1000 +
                 ((1000 * totalBalanceA * (100 - feePercentage)) /
                     (100 * _totalBalanceB)));
-            return _newRatio * _potentialBetAmount;
+            return _newRatio;
         }
     }
 

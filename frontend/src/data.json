@@ -1,12 +1,22 @@
 [
   {
     "id": 1,
-    "contractAddress": "0x09F20ee6f95ab47eaef5dbEc5Aa59e027FAB59D7",
-    "teamA": "Fenerbahce S.K.",
-    "teamB": "Galatasaray S.K.",
-    "teamALogo": "./contractImages/fb.png",
-    "teamBLogo": "./contractImages/gs.png",
-    "date": "15.00 CET, July 27, 2022",
-    "category": "Soccer"
+    "contractAddress": "0x056544754853A025b94BD220e8728C0A6Ba9b459",
+    "teamA": "Miami Heat",
+    "teamB": "Los Angeles Lakers",
+    "teamALogo": "./contractImages/miami.png",
+    "teamBLogo": "./contractImages/lakers.png",
+    "date": "00.00 TSI,July 03 2022",
+    "category": "NBA"
+  },
+  {
+    "id": 2,
+    "contractAddress": "0x81Ce49022A8236A5Ac92E8AE83cA76F0b9b4127f",
+    "teamA": "Golden State Warriors",
+    "teamB": "Sacremento Kings",
+    "teamALogo": "./contractImages/gsw.png",
+    "teamBLogo": "./contractImages/sacremento.png",
+    "date": "02.30 TSI,July 03 2022",
+    "category": "NBA"
   }
 ]

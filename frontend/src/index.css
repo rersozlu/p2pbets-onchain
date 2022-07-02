@@ -5,4 +5,5 @@ body {
   background-color: #5311e8;
   font-family: "Inter", sans-serif;
   letter-spacing: 1px;
+  box-sizing: border-box;
 }
