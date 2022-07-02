@@ -1,5 +1,6 @@
 .card {
-  color: white;
+  color: #3e12a5;
+  font-weight: 600;
   display: flex;
   justify-content: center;
   align-items: center;

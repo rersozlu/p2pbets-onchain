@@ -6,14 +6,15 @@
   transform: translateX(-50%);
   max-width: 1600px;
   z-index: 3;
+  font-weight: 600;
 }
 .date {
-  color: aliceblue;
+  color: #3e12a5;
   text-align: center;
 }
 
 .closeBtn {
-  color: white;
+  color: #3e12a5;
 }
 .closeBtn:hover {
   cursor: pointer;
@@ -25,7 +26,7 @@
 
 .teamA {
   font-size: 18px;
-  color: wheat;
+  color: #3e12a5;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,7 +34,7 @@
 
 .teamB {
   font-size: 18px;
-  color: wheat;
+  color: #3e12a5;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -48,17 +49,17 @@
 }
 
 .dropdown {
-  color: white;
+  color: #3e12a5;
   padding: 1em 1em;
 }
 
 .possibleratio {
-  color: white;
+  color: #3e12a5;
   padding: 1em 1em;
 }
 
 .selection {
-  color: white;
+  color: #3e12a5;
   padding: 1em 1em;
 }
 
