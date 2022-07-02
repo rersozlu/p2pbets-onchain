@@ -8,7 +8,6 @@ function Navbar() {
   const [web3Data, setWeb3Data] = useContext(Web3Context);
 
   async function connectWallet() {
-    
     try {
       if (window.ethereum) {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -29,6 +28,13 @@ function Navbar() {
 
   useEffect(() => {
     try {
+      const viewProvider = new ethers.providers.JsonRpcProvider(
+        "https://api.avax.network/ext/bc/C/rpc"
+      );
+      setWeb3Data((prevData) => ({
+        ...prevData,
+        viewProvider: viewProvider,
+      }));
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       setWeb3Data((prevData) => ({
