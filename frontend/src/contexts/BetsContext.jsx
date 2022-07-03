@@ -17,6 +17,8 @@ export function BetsContextProvider(props) {
         date: item.date,
         category: item.category,
         abi: betAbi.abi,
+        status: item.status,
+        winner: item.winner,
       }))
     );
   }, []);

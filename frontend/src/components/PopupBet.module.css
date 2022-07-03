@@ -88,3 +88,17 @@
   display: flex;
   flex-direction: column;
 }
+
+.grayBtn {
+  background-color: #d9d9d9;
+  color: black;
+  box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.25);
+  border-radius: 18px;
+  border: none;
+  padding: 1.2em;
+  margin-left: 40px;
+  font-weight: 700;
+  transition: 0.15s ease;
+  width: 200px;
+  align-self: center;
+}

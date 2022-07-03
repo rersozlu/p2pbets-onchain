@@ -15,6 +15,11 @@ function Card(props) {
           <div className={styles.date}>
             <p>{props.cardData.date.split(",")[0]}</p>
             <p>{props.cardData.date.split(",")[1]}</p>
+            <p
+              className={props.cardData.status ? styles.closed : styles.opened}
+            >
+              {props.cardData.status ? "Closed" : "Open"}
+            </p>
           </div>
           <div className={styles.teamB}>
             <img src={props.cardData.teamBLogo} alt="teamBLogo" />

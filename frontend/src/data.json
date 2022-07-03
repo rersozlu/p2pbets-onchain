@@ -7,7 +7,9 @@
     "teamALogo": "./contractImages/miami.png",
     "teamBLogo": "./contractImages/lakers.png",
     "date": "00.00 TSI,July 03 2022",
-    "category": "NBA"
+    "category": "NBA",
+    "status": true,
+    "winner": "a"
   },
   {
     "id": 2,
@@ -17,6 +19,8 @@
     "teamALogo": "./contractImages/gsw.png",
     "teamBLogo": "./contractImages/sacremento.png",
     "date": "02.30 TSI,July 03 2022",
-    "category": "NBA"
+    "category": "NBA",
+    "status": false,
+    "winner": "none"
   }
 ]

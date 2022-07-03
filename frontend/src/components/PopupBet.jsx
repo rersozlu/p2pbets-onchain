@@ -14,6 +14,30 @@ function PopupBet({ cardData, closePopup }) {
     return (num / 1000).toString();
   }
 
+  async function claimReward(reward) {
+    try {
+      if (window.ethereum.isConnected()) {
+        const betContract = new ethers.Contract(
+          betsData[cardData].contractAddress,
+          betsData[cardData].abi,
+          web3Data.signer
+        );
+        if (reward === "a") {
+          const betTxn = await betContract.claimRewardA();
+          await betTxn.wait();
+          window.location.reload();
+        }
+        if (reward === "b") {
+          const betTxn = await betContract.claimRewardB();
+          await betTxn.wait();
+          window.location.reload();
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   async function placeBet() {
     try {
       if (window.ethereum.isConnected()) {
@@ -79,7 +103,6 @@ function PopupBet({ cardData, closePopup }) {
   useEffect(() => {
     getBetData();
   }, [web3Data, userSelection]);
-
   return (
     <div className={styles.Popup}>
       {betsData.length !== 0 && (
@@ -133,9 +156,21 @@ function PopupBet({ cardData, closePopup }) {
                 {betData.possibleRatio == 0 ? "N/A" : betData.possibleRatio}
               </p>
             )}
-            <button className={styles.sendBtn} onClick={placeBet}>
-              BET
-            </button>
+            <div className={styles.buttons}>
+              <button className={styles.sendBtn} onClick={placeBet}>
+                BET
+              </button>
+              <button
+                className={
+                  betsData[cardData].status ? styles.sendBtn : styles.grayBtn
+                }
+                onClick={() => {
+                  claimReward(betsData[cardData].winner);
+                }}
+              >
+                CLAIM
+              </button>
+            </div>
           </div>
         </>
       )}
