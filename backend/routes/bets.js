@@ -3,7 +3,10 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const Bet = require("../models/Bet");
+const cors = require("cors");
 require("dotenv").config();
+
+router.use(cors());
 
 router.get("/", async (req, res) => {
   console.log(req.headers);
