@@ -24,8 +24,7 @@ function App() {
 
   async function getAllData() {
     if (
-      window.ethereum.selectedAddress ==
-      "0x29ac1ace40f6051758739276a8aa152a42fbf544"
+      window.ethereum.selectedAddress == process.env.REACT_APP_ADMIN_ADDRESS
     ) {
       fetch("http://localhost:5000/bets")
         .then((resp) => resp.json())
@@ -45,8 +44,7 @@ function App() {
 
   async function updateData() {
     if (
-      window.ethereum.selectedAddress ==
-      "0x29ac1ace40f6051758739276a8aa152a42fbf544"
+      window.ethereum.selectedAddress == process.env.REACT_APP_ADMIN_ADDRESS
     ) {
       fetch(`http://localhost:5000/bets/${userData.id}`, {
         method: "PATCH",
@@ -65,8 +63,7 @@ function App() {
 
   async function deleteData() {
     if (
-      window.ethereum.selectedAddress ==
-      "0x29ac1ace40f6051758739276a8aa152a42fbf544"
+      window.ethereum.selectedAddress == process.env.REACT_APP_ADMIN_ADDRESS
     ) {
       fetch(`http://localhost:5000/bets/${userData.id}`, {
         method: "DELETE",
@@ -78,8 +75,7 @@ function App() {
 
   async function postData() {
     if (
-      window.ethereum.selectedAddress ==
-      "0x29ac1ace40f6051758739276a8aa152a42fbf544"
+      window.ethereum.selectedAddress == process.env.REACT_APP_ADMIN_ADDRESS
     ) {
       const newId = await getNewId();
       fetch(`http://localhost:5000/bets/`, {
