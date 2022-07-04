@@ -23,17 +23,18 @@ function App() {
   }
 
   async function getAllData() {
+    console.log(window.ethereum.selectedAddress);
     if (
       window.ethereum.selectedAddress == process.env.REACT_APP_ADMIN_ADDRESS
     ) {
-      fetch("http://localhost:5000/bets")
+      fetch("https://p2pbets-api.vercel.app/bets")
         .then((resp) => resp.json())
         .then((json) => console.log(json));
     }
   }
 
   async function getNewId() {
-    const myBets = await fetch("http://localhost:5000/bets");
+    const myBets = await fetch("https://p2pbets-api.vercel.app/bets");
     const json = await myBets.json();
     return json.length;
   }
@@ -46,7 +47,7 @@ function App() {
     if (
       window.ethereum.selectedAddress == process.env.REACT_APP_ADMIN_ADDRESS
     ) {
-      fetch(`http://localhost:5000/bets/${userData.id}`, {
+      fetch(`https://p2pbets-api.vercel.app/bets/${userData.id}`, {
         method: "PATCH",
         body: JSON.stringify({
           status: userData.isClosed == "y" ? true : false,
@@ -65,7 +66,7 @@ function App() {
     if (
       window.ethereum.selectedAddress == process.env.REACT_APP_ADMIN_ADDRESS
     ) {
-      fetch(`http://localhost:5000/bets/${userData.id}`, {
+      fetch(`https://p2pbets-api.vercel.app/bets/${userData.id}`, {
         method: "DELETE",
       })
         .then((res) => res.json())
@@ -78,7 +79,7 @@ function App() {
       window.ethereum.selectedAddress == process.env.REACT_APP_ADMIN_ADDRESS
     ) {
       const newId = await getNewId();
-      fetch(`http://localhost:5000/bets/`, {
+      fetch(`https://p2pbets-api.vercel.app/bets`, {
         method: "POST",
         body: JSON.stringify({
           id: newId,
