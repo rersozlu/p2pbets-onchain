@@ -22,6 +22,17 @@ function App() {
     }
   }
 
+  async function getAllData() {
+    if (
+      window.ethereum.selectedAddress ==
+      "0x29ac1ace40f6051758739276a8aa152a42fbf544"
+    ) {
+      fetch("http://localhost:5000/bets")
+        .then((resp) => resp.json())
+        .then((json) => console.log(json));
+    }
+  }
+
   async function getNewId() {
     const myBets = await fetch("http://localhost:5000/bets");
     const json = await myBets.json();
@@ -97,6 +108,7 @@ function App() {
   return (
     <div className="App">
       <button onClick={connectWallet}>Connect wallet</button>
+      <button onClick={getAllData}>Get all bets to console</button>
       <h1>Update or Delete Bet</h1>
       <p>ID</p>
       <input
