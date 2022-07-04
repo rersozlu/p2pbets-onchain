@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 function App() {
   const [web3Data, setWeb3Data] = useState({});
   const [userData, setUserData] = useState({});
+  //admin page is only accesible via localhost, not deployed yet!
   async function connectWallet() {
     try {
       if (window.ethereum) {
