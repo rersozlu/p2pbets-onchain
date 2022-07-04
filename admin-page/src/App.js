@@ -83,7 +83,8 @@ function App() {
     if (
       window.ethereum.selectedAddress == process.env.REACT_APP_ADMIN_ADDRESS
     ) {
-      const newId = await getNewId();
+      let newId = await getNewId();
+      newId += 1;
       fetch(`https://p2pbets-api.vercel.app/bets`, {
         method: "POST",
         body: JSON.stringify({
