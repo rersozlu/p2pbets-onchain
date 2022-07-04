@@ -99,6 +99,7 @@ function App() {
           winner: "none",
         }),
         headers: {
+          "Content-type": "application/json; charset=UTF-8",
           password: userData.password,
         },
       })
