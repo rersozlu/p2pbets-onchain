@@ -5,7 +5,7 @@ export const BetsContext = createContext();
 export function BetsContextProvider(props) {
   const [betsData, setBetsData] = useState([]);
   async function getData() {
-    const data = await fetch("http://localhost:5000/bets");
+    const data = await fetch("https://p2pbets-api.vercel.app/bets");
     const response = await data.json();
     console.log(response);
     setBetsData(
