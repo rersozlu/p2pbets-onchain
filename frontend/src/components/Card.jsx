@@ -13,8 +13,7 @@ function Card(props) {
             <p>{props.cardData.teamA}</p>
           </div>
           <div className={styles.date}>
-            <p>{props.cardData.date.split(",")[0]}</p>
-            <p>{props.cardData.date.split(",")[1]}</p>
+            <p>{props.cardData.date}</p>
             <p
               className={props.cardData.status ? styles.closed : styles.opened}
             >
