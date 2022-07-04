@@ -1,13 +1,15 @@
 import { useState, createContext, useEffect } from "react";
-import data from "../data.json";
 import betAbi from "../contracts/BetPool.json";
 export const BetsContext = createContext();
 
 export function BetsContextProvider(props) {
   const [betsData, setBetsData] = useState([]);
-  useEffect(() => {
+  async function getData() {
+    const data = await fetch("http://localhost:5000/bets");
+    const response = await data.json();
+    console.log(response);
     setBetsData(
-      data.map((item) => ({
+      response.map((item) => ({
         id: item.id,
         contractAddress: item.contractAddress,
         teamA: item.teamA,
@@ -21,6 +23,9 @@ export function BetsContextProvider(props) {
         winner: item.winner,
       }))
     );
+  }
+  useEffect(() => {
+    getData();
   }, []);
   return (
     <BetsContext.Provider value={[betsData, setBetsData]}>
