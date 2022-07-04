@@ -8,7 +8,7 @@ contract BetPool {
     //constants
     uint256 constant feePercentage = 15;
     //immutable parameters
-    address payable immutable owner;
+    address payable owner;
     uint256 immutable deployTime;
     uint256 immutable expiryTime;
 
@@ -166,6 +166,10 @@ contract BetPool {
             payable(msg.sender).transfer(totalShare);
             emit RewardClaimed(msg.sender, totalShare);
         }
+    }
+
+    function changeOwner(address payable _newOwner) external onlyOwner {
+        owner = _newOwner;
     }
 
     //to collect fee's after withdrawals- this option will be available after a week of contract deployment
