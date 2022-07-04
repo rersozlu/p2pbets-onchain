@@ -56,6 +56,7 @@ function App() {
         }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
+          password: userData.password,
         },
       })
         .then((response) => response.json())
@@ -69,6 +70,9 @@ function App() {
     ) {
       fetch(`https://p2pbets-api.vercel.app/bets/${userData.id}`, {
         method: "DELETE",
+        headers: {
+          password: userData.password,
+        },
       })
         .then((res) => res.json())
         .then((json) => console.log(json));
@@ -95,7 +99,7 @@ function App() {
           winner: "none",
         }),
         headers: {
-          "Content-type": "application/json; charset=UTF-8",
+          password: userData.password,
         },
       })
         .then((response) => response.json())
@@ -184,6 +188,13 @@ function App() {
         value={userData.address}
         onChange={handleChange}
         placeholder="nba / soccer / mma etc."
+      />
+      <p>Admin Pass</p>
+      <input
+        name="password"
+        type="password"
+        value={userData.password}
+        onChange={handleChange}
       />
 
       <button onClick={updateData}>Update!</button>
