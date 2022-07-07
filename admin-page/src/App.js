@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { ethers } from "ethers";
-import poolAbi from "./contracts/BetPoolFactory.json"
+import poolAbi from "./contracts/BetPoolFactory.json";
 function App() {
   const [web3Data, setWeb3Data] = useState({});
   const [userData, setUserData] = useState({});
-  const [allPools, setAllPools] = useState([])
+  const [allPools, setAllPools] = useState([]);
   //admin page is only accesible via localhost, not deployed yet!
   async function connectWallet() {
     try {
@@ -25,20 +25,26 @@ function App() {
     }
   }
 
-    async function deployNewBet() {
-      const factoryContract = new ethers.Contract("0x7BAf7630E74851a80c60aC160e5327815953fb5b", poolAbi.abi, web3Data.signer);
-      const newPool = await factoryContract.createNewBetPool(userData.timeDifference)
-      await newPool.wait()
-      return newPool.address
-    }
+  async function deployNewBet() {
+    const factoryContract = new ethers.Contract(
+      "0x7BAf7630E74851a80c60aC160e5327815953fb5b",
+      poolAbi.abi,
+      web3Data.signer
+    );
+    const newPool = await factoryContract.createNewBetPool(
+      userData.timeDifference
+    );
+    await newPool.wait();
+    return newPool.address;
+  }
 
   async function getAllData() {
-    try{
+    try {
       const allPools = await fetch("https://p2pbets-api.vercel.app/bets");
-      const json = await allPools.json()
-      setAllPools(json)
-    }catch(e){
-      console.log(e)
+      const json = await allPools.json();
+      setAllPools(json);
+    } catch (e) {
+      console.log(e);
     }
   }
 
@@ -52,65 +58,72 @@ function App() {
   }
 
   async function updateData() {
-      fetch(`https://p2pbets-api.vercel.app/bets/${userData.id}`, {
-        method: "PATCH",
-        body: JSON.stringify({
-          status: userData.isClosed === "y" ? true : false,
-          winner: userData.winner,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          password: userData.password,
-        },
-      })
-        .then((response) => response.json())
-        .then((json) => console.log(json));
+    fetch(`https://p2pbets-api.vercel.app/bets/${userData.id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        status: userData.isClosed === "y" ? true : false,
+        winner: userData.winner,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        password: userData.password,
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => console.log(json));
   }
 
   async function deleteData() {
-      fetch(`https://p2pbets-api.vercel.app/bets/${userData.id}`, {
-        method: "DELETE",
-        headers: {
-          password: userData.password,
-        },
-      })
-        .then((res) => res.json())
-        .then((json) => console.log(json));
+    fetch(`https://p2pbets-api.vercel.app/bets/${userData.id}`, {
+      method: "DELETE",
+      headers: {
+        password: userData.password,
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => console.log(json));
   }
 
   async function postData() {
-      let newId = await getNewId();
-      const newAddress = await deployNewBet()
-      newId += 1;
-      fetch(`https://p2pbets-api.vercel.app/bets`, {
-        method: "POST",
-        body: JSON.stringify({
-          id: newId,
-          contractAddress: newAddress,
-          teamA: userData.nameA,
-          teamB: userData.nameB,
-          teamALogo: userData.imgA,
-          teamBLogo: userData.imgB,
-          date: userData.date,
-          category: userData.category,
-          status: false,
-          winner: "none",
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          password: userData.password,
-        },
-      })
-        .then((response) => response.json())
-        .then((json) => console.log(json));
+    const newAddress = await deployNewBet();
+    let newId = await getNewId();
+    newId += 1;
+    fetch(`https://p2pbets-api.vercel.app/bets`, {
+      method: "POST",
+      body: JSON.stringify({
+        id: newId,
+        contractAddress: newAddress,
+        teamA: userData.nameA,
+        teamB: userData.nameB,
+        teamALogo: userData.imgA,
+        teamBLogo: userData.imgB,
+        date: userData.date,
+        category: userData.category,
+        status: false,
+        winner: "none",
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        password: userData.password,
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => console.log(json));
   }
 
-  function dateToUnix(date){
-    const dateArray = date.split("-")
-    const currentTime = Math.floor(Date.now() / 1000)
-    const unix = new Date(dateArray[1] != 0 ? dateArray[0] : dateArray[0] - 1, dateArray[1] != 0 ? dateArray[1] - 1 : "12", dateArray[2]).getTime()
-    setUserData(prev => ({...prev, timeDifference: (unix / 1000) - currentTime}))
-    return unix / 1000
+  function dateToUnix(date) {
+    const dateArray = date.split("-");
+    const currentTime = Math.floor(Date.now() / 1000);
+    const unix = new Date(
+      dateArray[1] != 0 ? dateArray[0] : dateArray[0] - 1,
+      dateArray[1] != 0 ? dateArray[1] - 1 : "12",
+      dateArray[2]
+    ).getTime();
+    setUserData((prev) => ({
+      ...prev,
+      timeDifference: unix / 1000 - currentTime,
+    }));
+    return unix / 1000;
   }
 
   return (
@@ -134,7 +147,16 @@ function App() {
         onChange={handleChange}
         defaultValue="n"
       />
-      <input type="date" value={userData.contractDate} onChange={(e) => setUserData(prev => ({...prev, [e.target.name] : dateToUnix(e.target.value.toString())}))} name="contractDate" />
+      <input
+        type="date"
+        onChange={(e) =>
+          setUserData((prev) => ({
+            ...prev,
+            [e.target.name]: dateToUnix(e.target.value.toString()),
+          }))
+        }
+        name="contractDate"
+      />
       <p>Winner?</p>
       <input
         name="winner"
@@ -211,18 +233,21 @@ function App() {
 
       <button onClick={postData}>Post new bet</button>
 
-      {allPools.length > 0 && allPools.map((item,index) => {
-        return (<div className="bet">
-          <p>ID: {item.id}</p>
-          <p>Cont. Address: {item.contractAddress}</p>
-          <p>Team A: {item.teamA}</p>
-          <p>Team B: {item.teamB}</p>
-          <p>Date: {item.date}</p>
-          <p>Status: {!item.status ? "open" : "closed"}</p>
-          <p>Winner: {item.winner}</p>
-          <br/>
-        </div>)
-      })}
+      {allPools.length > 0 &&
+        allPools.map((item, index) => {
+          return (
+            <div className="bet">
+              <p>ID: {item.id}</p>
+              <p>Cont. Address: {item.contractAddress}</p>
+              <p>Team A: {item.teamA}</p>
+              <p>Team B: {item.teamB}</p>
+              <p>Date: {item.date}</p>
+              <p>Status: {!item.status ? "open" : "closed"}</p>
+              <p>Winner: {item.winner}</p>
+              <br />
+            </div>
+          );
+        })}
     </div>
   );
 }

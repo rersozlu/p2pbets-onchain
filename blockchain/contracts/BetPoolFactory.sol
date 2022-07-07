@@ -11,11 +11,16 @@ contract BetPoolFactory {
         isAllowed[msg.sender] = 1;
     }
 
-    function createNewBetPool(uint256 _timespan) external {
+    function createNewBetPool(uint256 _timespan)
+        external
+        payable
+        returns (address)
+    {
         require(isAllowed[msg.sender] > 0, "Not allowed!");
         BetPool newPool = new BetPool(payable(msg.sender), _timespan);
         newPool.changeOwner(payable(msg.sender));
         emit newPoolCreated(address(newPool));
+        return address(newPool);
     }
 
     function changeAllowance(address _newUser) external {
