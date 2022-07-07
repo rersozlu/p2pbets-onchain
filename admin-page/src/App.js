@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { ethers } from "ethers";
+import poolAbi from "./contracts/BetPoolFactory.json"
 function App() {
   const [web3Data, setWeb3Data] = useState({});
   const [userData, setUserData] = useState({});
+  const [allPools, setAllPools] = useState([])
   //admin page is only accesible via localhost, not deployed yet!
   async function connectWallet() {
     try {
@@ -23,14 +25,20 @@ function App() {
     }
   }
 
+    async function deployNewBet() {
+      const factoryContract = new ethers.Contract("0x7BAf7630E74851a80c60aC160e5327815953fb5b", poolAbi.abi, web3Data.signer);
+      const newPool = await factoryContract.createNewBetPool(userData.timeDifference)
+      await newPool.wait()
+      return newPool.address
+    }
+
   async function getAllData() {
-    console.log(window.ethereum.selectedAddress);
-    if (
-      window.ethereum.selectedAddress == process.env.REACT_APP_ADMIN_ADDRESS
-    ) {
-      fetch("https://p2pbets-api.vercel.app/bets")
-        .then((resp) => resp.json())
-        .then((json) => console.log(json));
+    try{
+      const allPools = await fetch("https://p2pbets-api.vercel.app/bets");
+      const json = await allPools.json()
+      setAllPools(json)
+    }catch(e){
+      console.log(e)
     }
   }
 
@@ -39,19 +47,15 @@ function App() {
     const json = await myBets.json();
     return json.length;
   }
-  getNewId();
   function handleChange(e) {
     setUserData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
   async function updateData() {
-    if (
-      window.ethereum.selectedAddress == process.env.REACT_APP_ADMIN_ADDRESS
-    ) {
       fetch(`https://p2pbets-api.vercel.app/bets/${userData.id}`, {
         method: "PATCH",
         body: JSON.stringify({
-          status: userData.isClosed == "y" ? true : false,
+          status: userData.isClosed === "y" ? true : false,
           winner: userData.winner,
         }),
         headers: {
@@ -61,13 +65,9 @@ function App() {
       })
         .then((response) => response.json())
         .then((json) => console.log(json));
-    }
   }
 
   async function deleteData() {
-    if (
-      window.ethereum.selectedAddress == process.env.REACT_APP_ADMIN_ADDRESS
-    ) {
       fetch(`https://p2pbets-api.vercel.app/bets/${userData.id}`, {
         method: "DELETE",
         headers: {
@@ -76,14 +76,11 @@ function App() {
       })
         .then((res) => res.json())
         .then((json) => console.log(json));
-    }
   }
 
   async function postData() {
-    if (
-      window.ethereum.selectedAddress == process.env.REACT_APP_ADMIN_ADDRESS
-    ) {
       let newId = await getNewId();
+      const newAddress = await deployNewBet()
       newId += 1;
       fetch(`https://p2pbets-api.vercel.app/bets`, {
         method: "POST",
@@ -106,7 +103,14 @@ function App() {
       })
         .then((response) => response.json())
         .then((json) => console.log(json));
-    }
+  }
+
+  function dateToUnix(date){
+    const dateArray = date.split("-")
+    const currentTime = Math.floor(Date.now() / 1000)
+    const unix = new Date(dateArray[1] != 0 ? dateArray[0] : dateArray[0] - 1, dateArray[1] != 0 ? dateArray[1] - 1 : "12", dateArray[2]).getTime()
+    setUserData(prev => ({...prev, timeDifference: (unix / 1000) - currentTime}))
+    return unix / 1000
   }
 
   return (
@@ -130,6 +134,7 @@ function App() {
         onChange={handleChange}
         defaultValue="n"
       />
+      <input type="date" value={userData.contractDate} onChange={(e) => setUserData(prev => ({...prev, [e.target.name] : dateToUnix(e.target.value.toString())}))} name="contractDate" />
       <p>Winner?</p>
       <input
         name="winner"
@@ -167,7 +172,7 @@ function App() {
         value={userData.imgB}
         onChange={handleChange}
       />
-      <p>Date</p>
+      <p>Date to View</p>
       <input
         name="date"
         type="text"
@@ -175,6 +180,7 @@ function App() {
         onChange={handleChange}
         placeholder="02.30 TSI,July 03 2022"
       />
+
       <p>Category</p>
       <input
         name="category"
@@ -204,6 +210,19 @@ function App() {
       <button onClick={deleteData}>Delete!</button>
 
       <button onClick={postData}>Post new bet</button>
+
+      {allPools.length > 0 && allPools.map((item,index) => {
+        return (<div className="bet">
+          <p>ID: {item.id}</p>
+          <p>Cont. Address: {item.contractAddress}</p>
+          <p>Team A: {item.teamA}</p>
+          <p>Team B: {item.teamB}</p>
+          <p>Date: {item.date}</p>
+          <p>Status: {!item.status ? "open" : "closed"}</p>
+          <p>Winner: {item.winner}</p>
+          <br/>
+        </div>)
+      })}
     </div>
   );
 }
