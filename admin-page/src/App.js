@@ -86,7 +86,7 @@ function App() {
         method: "POST",
         body: JSON.stringify({
           id: newId,
-          contractAddress: userData.address,
+          contractAddress: newAddress,
           teamA: userData.nameA,
           teamB: userData.nameB,
           teamALogo: userData.imgA,
